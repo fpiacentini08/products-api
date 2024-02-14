@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/product")
 class ProductController @Autowired constructor(
-        val productService: ProductService
+        private val productService: ProductService
 ) {
 
     @GetMapping("")
-    fun getProduct(): List<ProductApi> {
+    fun getProducts(): List<ProductApi> {
         return productService.getAll()
     }
 }
