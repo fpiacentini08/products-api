@@ -4,4 +4,5 @@ import com.example.api.domain.api.ProductApi
 
 interface ProductService {
     fun getAll() : List<ProductApi>
+    fun add(productApi: ProductApi): ProductApi
 }
