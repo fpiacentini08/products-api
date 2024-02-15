@@ -6,8 +6,7 @@ import jakarta.persistence.Id
 import java.math.BigDecimal
 
 @Entity
-data class Product(@Id val name: String, val quantity: Int, val price: BigDecimal) {
-
+data class Product(@Id val name: String, var quantity: Int, val price: BigDecimal){
 
     fun toProductApi(): ProductApi {
         return ProductApi(name, quantity, price)

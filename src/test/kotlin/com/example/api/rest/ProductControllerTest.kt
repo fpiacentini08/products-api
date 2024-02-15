@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.math.BigDecimal
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.ComponentScan
 
 
 @WebMvcTest
@@ -127,5 +129,6 @@ class ProductControllerTest (@Autowired val mockMvc: MockMvc){
                 .andExpect(jsonPath("$.price").value(BigDecimal(2.0)))
 
     }
+
 
 }
