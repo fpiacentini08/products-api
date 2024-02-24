@@ -5,11 +5,10 @@ import com.example.api.domain.exception.NotValidException
 import com.example.api.domain.model.Product
 import com.example.api.domain.repository.ProductRepository
 import com.example.api.domain.service.ProductService
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
 import java.util.*
 import java.util.stream.Collectors
-import kotlin.collections.ArrayList
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 
 @Service
 class DefaultProductService : ProductService {
@@ -30,10 +29,14 @@ class DefaultProductService : ProductService {
 
     override fun add(productApi: ProductApi): ProductApi {
         val product: Optional<Product> = productRepository.findById(productApi.name)
-        if(product.isPresent){
-            throw NotValidException("ERR01", "Product name already exists")
-        }
+        validateIfProductAlreadyExists(product)
         val newProduct : Product = productRepository.save(Product(productApi.name, productApi.quantity, productApi.price))
         return newProduct.toProductApi()
+    }
+
+    private fun validateIfProductAlreadyExists(product: Optional<Product>) {
+        if (product.isPresent) {
+            throw NotValidException("ERR01", "Product name already exists")
+        }
     }
 }

@@ -23,28 +23,34 @@ class DefaultStockService : StockService {
     override fun add(stockApi: StockApi): StockApi {
         val name = stockApi.name
         val product: Optional<Product> = productRepository.findById(name)
-        if(product.isEmpty){
-            throw NotValidException("ERR03", "Product does not exist")
-        }
+        validateProductIsPresent(product)
         var storedProduct : Product = product.get()
         val quantity = storedProduct.quantity + stockApi.quantity
         productRepository.save(Product(name, quantity, storedProduct.price))
         return StockApi(name, quantity)
 
     }
-
     override fun substract(stockApi: StockApi): StockApi {
         val name = stockApi.name
         val product: Optional<Product> = productRepository.findById(name)
-        if(product.isEmpty){
-            throw NotValidException("ERR03", "Product does not exist")
-        }
-        var storedProduct : Product = product.get()
-        if(storedProduct.quantity < stockApi.quantity){
-            throw NotValidException("ERR04", "Stock is not enough to substract from")
-        }
+        validateProductIsPresent(product)
+        val storedProduct : Product = product.get()
         val quantity = storedProduct.quantity - stockApi.quantity
+        validateCalculatedQuantityIsNotNegative(quantity)
         productRepository.save(Product(name, quantity, storedProduct.price))
         return StockApi(name, quantity)
     }
+
+    private fun validateProductIsPresent(product: Optional<Product>) {
+        if (product.isEmpty) {
+            throw NotValidException("ERR03", "Product does not exist")
+        }
+    }
+
+    private fun validateCalculatedQuantityIsNotNegative(quantity: Int) {
+        if (quantity < 0) {
+            throw NotValidException("ERR04", "Stock is not enough to substract from")
+        }
+    }
+
 }
