@@ -9,11 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.scheduling.annotation.EnableAsync
 
 @SpringBootApplication
-@Configuration
-@EnableAutoConfiguration
-@ComponentScan("com.example.api")
-@EnableJpaRepositories("com.example.api.domain.repository")
-
 open class ApiApplication
 
 fun main(args: Array<String>) {
