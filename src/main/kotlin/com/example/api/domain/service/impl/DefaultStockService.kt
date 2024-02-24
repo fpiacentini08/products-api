@@ -21,6 +21,7 @@ class DefaultStockService : StockService {
     }
 
     override fun add(stockApi: StockApi): StockApi {
+        validateReceivedStockIsPositive(stockApi)
         val name = stockApi.name
         val product: Optional<Product> = productRepository.findById(name)
         validateProductIsPresent(product)
@@ -30,7 +31,10 @@ class DefaultStockService : StockService {
         return StockApi(name, quantity)
 
     }
+
+
     override fun substract(stockApi: StockApi): StockApi {
+        validateReceivedStockIsPositive(stockApi)
         val name = stockApi.name
         val product: Optional<Product> = productRepository.findById(name)
         validateProductIsPresent(product)
@@ -50,6 +54,12 @@ class DefaultStockService : StockService {
     private fun validateCalculatedQuantityIsNotNegative(quantity: Int) {
         if (quantity < 0) {
             throw NotValidException("ERR04", "Stock is not enough to substract from")
+        }
+    }
+
+    private fun validateReceivedStockIsPositive(stockApi: StockApi) {
+        if (stockApi.quantity < 1){
+            throw NotValidException("ERR05", "Requested stock quantity should be a positive number.")
         }
     }
 

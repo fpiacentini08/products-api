@@ -81,4 +81,36 @@ class DefaultStockServiceTest {
         verify(exactly = 0) { productRepository.save(any()) }
     }
 
+    @Test
+    fun givenANegativeQuantityInStockApiRequest_whenAddStock_thenThrowException() {
+        val stockApi: StockApi = StockApi("A", -1)
+        assertThrows<NotValidException> {  defaultStockService.add(stockApi) }
+        verify(exactly = 0) { productRepository.findById(any()) }
+        verify(exactly = 0) { productRepository.save(any()) }
+    }
+
+    @Test
+    fun givenZeroQuantityInStockApiRequest_whenAddStock_thenThrowException() {
+        val stockApi: StockApi = StockApi("A", 0)
+        assertThrows<NotValidException> {  defaultStockService.add(stockApi) }
+        verify(exactly = 0) { productRepository.findById(any()) }
+        verify(exactly = 0) { productRepository.save(any()) }
+    }
+
+    @Test
+    fun givenANegativeQuantityInStockApiRequest_whenSubstractStock_thenThrowException() {
+        val stockApi: StockApi = StockApi("A", -1)
+        assertThrows<NotValidException> {  defaultStockService.substract(stockApi) }
+        verify(exactly = 0) { productRepository.findById(any()) }
+        verify(exactly = 0) { productRepository.save(any()) }
+    }
+
+    @Test
+    fun givenZeroQuantityInStockApiRequest_whenSubstractStock_thenThrowException() {
+        val stockApi: StockApi = StockApi("A", 0)
+        assertThrows<NotValidException> {  defaultStockService.add(stockApi) }
+        verify(exactly = 0) { productRepository.findById(any()) }
+        verify(exactly = 0) { productRepository.save(any()) }
+    }
+
 }
