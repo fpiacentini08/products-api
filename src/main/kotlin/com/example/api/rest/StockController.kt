@@ -1,11 +1,10 @@
 package com.example.api.rest
 
-import com.example.api.domain.api.ProductApi
-import com.example.api.domain.service.ProductService
+import com.example.api.domain.api.StockApi
+import com.example.api.domain.service.StockService
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,19 +12,21 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/product")
-class ProductController @Autowired constructor(
-        private val productService: ProductService
+@RequestMapping("/stock")
+class StockController @Autowired constructor(
+    private val stockService: StockService
 ) {
 
-    @GetMapping("")
-    fun getProducts(): List<ProductApi> {
-        return productService.getAll()
+    @PostMapping("/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    fun addToStock(@Valid @RequestBody stockApi: StockApi): StockApi {
+        return stockService.add(stockApi)
     }
 
-    @PostMapping("")
+    @PostMapping("/substract")
     @ResponseStatus(HttpStatus.CREATED)
-    fun addProduct(@Valid @RequestBody productApi: ProductApi): ProductApi {
-        return productService.add(productApi)
+    fun substractFromStock(@Valid @RequestBody stockApi: StockApi): StockApi {
+        return stockService.substract(stockApi)
     }
+
 }
